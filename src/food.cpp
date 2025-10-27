@@ -8,7 +8,10 @@ void food::restawn()
     pos_y = SAUT * randomInt(0, TAILLE - 1);
     sprite.setTexture(texture);
     sprite.setPosition(pos_x, pos_y);
-    this->set_couleur();
+    if (COLORFUL_SNAKE)
+    {
+        this->set_couleur();
+    }
 }
 
 void food::print_loc()
@@ -29,7 +32,7 @@ int food::getPosY()
 
 void food::set_couleur()
 {
-    sf::Color couleur_tmp(randomInt(0, 255),randomInt(0, 255),randomInt(0, 255),255);
+    sf::Color couleur_tmp(randomInt(0, 255), randomInt(0, 255), randomInt(0, 255), 255);
     couleur = sprite.getColor();
     sprite.setColor(couleur_tmp);
 }
@@ -43,8 +46,6 @@ sf::Sprite food::get_Sprite()
 {
     return sprite;
 }
-
-
 
 int randomInt(int min, int max)
 {

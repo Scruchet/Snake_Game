@@ -106,8 +106,10 @@ void snake::put_texture(food pomme)
         sprite[0].setTexture(textures["head_right"]);
         break;
     }
-    sprite[0].setColor(couleur_pomme);
-
+    if (COLORFUL_SNAKE)
+    {
+        sprite[0].setColor(couleur_pomme);
+    }
     // --- CORPS ---
     if (taille > 2)
     {
@@ -130,7 +132,10 @@ void snake::put_texture(food pomme)
             else if ((avant.x > actuel.x && apres.y > actuel.y) || (apres.x > actuel.x && avant.y > actuel.y))
                 sprite[i].setTexture(textures["body_bottomright"]);
             sprite[i].setPosition(corps[i].x, corps[i].y);
-            sprite[i].setColor(couleur_pomme);
+            if (COLORFUL_SNAKE)
+            {
+                sprite[i].setColor(couleur_pomme);
+            }
         }
     }
     // --- QUEUE ---
@@ -148,9 +153,11 @@ void snake::put_texture(food pomme)
         else
             sprite[taille - 1].setTexture(textures["tail_up"]);
         sprite[taille - 1].setPosition(corps[taille - 1].x, corps[taille - 1].y);
-        sprite[taille - 1].setColor(couleur_pomme);
+        if (COLORFUL_SNAKE)
+        {
+            sprite[taille - 1].setColor(couleur_pomme);
+        }
     }
-
 }
 
 int snake::get_taille()

@@ -13,4 +13,6 @@
 #define SAUT TAILLE_ECRAN / TAILLE
 
 
+#define COLORFUL_SNAKE 0
+
 #endif
