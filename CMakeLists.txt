@@ -12,7 +12,7 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(ASSETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/assets)
-set(RES_EMBEDDED_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources_embedded)
+set(RES_EMBEDDED_DIR ${CMAKE_CURRENT_SOURCE_DIR}/colors/resources_embedded)
 set(SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/script.sh)
 set(TEXTURE_HEADER ${INCLUDE_DIR}/textures.h)
 
