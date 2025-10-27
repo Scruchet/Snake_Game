@@ -1,7 +1,7 @@
 #!/bin/bash
 
-INPUT_DIR="assets"
-OUTPUT_DIR="resources_embedded"
+INPUT_DIR="colors/assets"
+OUTPUT_DIR="colors/resources_embedded"
 HEADER_FILE="include/textures.h"
 
 mkdir -p "$OUTPUT_DIR"
@@ -30,7 +30,7 @@ for file in "$INPUT_DIR"/*; do
     } > "$output_file"
 
     # Ajoute un include dans textures.h
-    echo "#include \"../resources_embedded/${filename}.h\"" >> "$HEADER_FILE"
+    echo "#include \"../colors/resources_embedded/${filename}.h\"" >> "$HEADER_FILE"
 done
 
 echo "" >> "$HEADER_FILE"
