@@ -1,6 +1,5 @@
 
 default :
-	make build 
 	cd build/ && ./main
 
 build : 
