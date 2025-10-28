@@ -37,41 +37,23 @@ void gestion_fleches(sf::Event event, class snake *personnage, int *changement_d
                 // std::cout << "Bouton Bas pressé !" << std::endl;
             }
             break;
-        case sf::Keyboard::Space:
-            personnage->manger();
-            break;
         }
         *changement_dir = 1;
     }
 }
 
-void generer_arriere_plan(sf::RenderWindow *window)
+void display_sprites(sf::RenderWindow *window, class snake joueur, class food pomme)
 {
-    window->clear();
-    int taille_carre = TAILLE_ECRAN / TAILLE;
-    sf::RectangleShape carre(sf::Vector2f(taille_carre, taille_carre));
-    for (int i = 0; i < TAILLE; i++)
+    std::vector<sf::Sprite> cp = joueur.get_sprite();
+    for (int i = 0; i < joueur.get_taille(); i++)
     {
-        int couleur = i % 2;
-        for (int j = 0; j < TAILLE; j++)
-        {
-            couleur++;
-
-            if (couleur % 2)
-            {
-                carre.setFillColor(sf::Color(173, 214, 68, 255));
-            }
-            else
-            {
-                carre.setFillColor(sf::Color(166, 209, 60, 255));
-            }
-            carre.setPosition(j * taille_carre, i * taille_carre);
-            window->draw(carre);
-        }
+        window->draw(cp[i]);
     }
+    sf::Sprite sprite = pomme.get_Sprite();
+    window->draw(sprite);
 }
 
-void generer_arriere_plan_jpeg(const std::string &nom_fichier)
+void display_fond(sf::RenderWindow *window)
 {
     int taille_carre = TAILLE_ECRAN / TAILLE;
     sf::RenderTexture renderTexture;
@@ -90,9 +72,9 @@ void generer_arriere_plan_jpeg(const std::string &nom_fichier)
         {
             couleur++;
             if (couleur % 2)
-                carre.setFillColor(sf::Color(173, 214, 68, 255));
+                carre.setFillColor(sf::Color(173, 214, 68));
             else
-                carre.setFillColor(sf::Color(143, 180, 50, 255));
+                carre.setFillColor(sf::Color(143, 180, 50));
 
             carre.setPosition(j * taille_carre, i * taille_carre);
             renderTexture.draw(carre);
@@ -100,42 +82,8 @@ void generer_arriere_plan_jpeg(const std::string &nom_fichier)
     }
 
     renderTexture.display();
-
-    sf::Image image = renderTexture.getTexture().copyToImage();
-
-    if (!image.saveToFile(nom_fichier))
-    {
-        std::cerr << "Erreur : impossible d’enregistrer le fichier " << nom_fichier << std::endl;
-        return;
-    }
-
-    std::cout << "✅ Image enregistrée avec succès : " << nom_fichier << std::endl;
-}
-
-void display_sprites(sf::RenderWindow *window, class snake joueur, class food pomme)
-{
-    std::vector<sf::Sprite> cp = joueur.get_sprite();
-    for (int i = 0; i < joueur.get_taille(); i++)
-    {
-        window->draw(cp[i]);
-    }
-    sf::Sprite sprite = pomme.get_Sprite();
+    sf::Sprite sprite(renderTexture.getTexture());
     window->draw(sprite);
-}
-
-void display_fond(sf::RenderWindow *window)
-{
-    sf::Texture texture;
-    if (!texture.loadFromMemory(snake_png, snake_png_len))
-    {
-        // error...
-        std::cout << "Erreur lors de l'application de l'arrière plan." << std::endl;
-    }
-    else
-    {
-        sf::Sprite sprite(texture);
-        window->draw(sprite);
-    }
 }
 
 void collision(class snake *joueur, class food *pomme, int *jeu)
@@ -197,14 +145,13 @@ void jeu(sf::RenderWindow *window, class snake *personnage, class food *pomme, i
             {
                 changement_dir = 0;
                 resfresh = 0;
-                personnage->avancer(); // <-- fonction à créer ou à appeler
+                personnage->avancer();
                 collision(personnage, pomme, &jeu);
                 personnage->put_texture(*pomme); // met à jour les textures et positions
             }
             gestion_fleches(event, personnage, &changement_dir);
             resfresh++;
         }
-        // generer_arriere_plan(&window);
 
         window->display();
     }
@@ -216,10 +163,10 @@ EcranFinResultat afficherEcranFin(sf::RenderWindow &window, int score)
     sf::Font font;
     if (!font.loadFromMemory(arial_ttf, arial_ttf_len))
     {
-        std::cerr << "Erreur : impossible de charger la police !" << std::endl;
+        std::cerr << "Error : impossible de load the font" << std::endl;
         return QuitterJeu;
     }
-    sf::Text message("Fin du jeu !", font, 50);
+    sf::Text message("End of the game !", font, 50);
     message.setFillColor(sf::Color::White);
     message.setPosition(150, 100);
 
@@ -231,7 +178,7 @@ EcranFinResultat afficherEcranFin(sf::RenderWindow &window, int score)
     redemarrer.setFillColor(sf::Color(100, 100, 255));
     redemarrer.setPosition(200, 300);
 
-    sf::Text texteredemarrer("Redemarrer", font, 25);
+    sf::Text texteredemarrer("Play again", font, 25);
     sf::FloatRect rBounds = texteredemarrer.getLocalBounds();
     texteredemarrer.setOrigin(rBounds.width / 2, rBounds.height / 2);
     texteredemarrer.setPosition(redemarrer.getPosition().x + 75, redemarrer.getPosition().y + 30);
@@ -240,7 +187,7 @@ EcranFinResultat afficherEcranFin(sf::RenderWindow &window, int score)
     quitter.setFillColor(sf::Color(100, 100, 255));
     quitter.setPosition(500, 300);
 
-    sf::Text textequitter("Quitter", font, 25);
+    sf::Text textequitter("Exit", font, 25);
     sf::FloatRect qBounds = textequitter.getLocalBounds();
     textequitter.setOrigin(qBounds.width / 2, qBounds.height / 2);
     textequitter.setPosition(quitter.getPosition().x + 75, quitter.getPosition().y + 30);

@@ -12,8 +12,6 @@ enum EcranFinResultat { QuitterJeu, RedemarrerJeu };
 
 
 void gestion_fleches(sf::Event event, class snake *personnage, int *changement_dir);
-void generer_arriere_plan(sf::RenderWindow *window);
-void generer_arriere_plan_jpeg(const std::string &nom_fichier);
 void display_sprites(sf::RenderWindow *window, class snake joueur, class food pomme);
 void display_fond(sf::RenderWindow *window);
 void collision(class snake *joueur, class food *pomme, int *jeu);

@@ -2,8 +2,8 @@
 
 # Vérifie qu'un argument a été fourni
 if [ -z "$1" ]; then
-    echo "Erreur : il faut fournir une valeur."
-    echo "Usage : $0 <valeur>"
+    echo "Error : Invalid format"
+    echo "Usage : $0 <valor>"
     exit 1
 fi
 
@@ -11,7 +11,7 @@ FILE="../include/constante.hpp"
 
 # Vérifie que le fichier existe
 if [ ! -f "$FILE" ]; then
-    echo "Erreur : le fichier $FILE n'existe pas."
+    echo "Error : $FILE file does not exist"
     exit 1
 fi
 
