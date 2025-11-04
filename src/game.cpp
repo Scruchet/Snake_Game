@@ -1,11 +1,17 @@
 #include "game.hpp"
 
-void gestion_fleches(sf::Event event, class snake *personnage, int *changement_dir)
+void gestion_fleches(sf::Event event, class snake *personnage, int *changement_dir, bool *pause)
 {
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+    {
+        *pause = !(*pause);
+        *changement_dir = 0;
+        return;
+    }
     if (*changement_dir)
         return;
     // Détection d’appui d’une touche
-    if (event.type == sf::Event::KeyPressed)
+    if (event.type == sf::Event::KeyPressed && !(*pause))
     {
         switch (event.key.code)
         {
@@ -120,12 +126,12 @@ void collision(class snake *joueur, class food *pomme, int *jeu)
 void jeu(sf::RenderWindow *window, class snake *personnage, class food *pomme, int *redemarrer)
 {
     sf::Clock clock;
-    float delai = 10;
+    float delai = 5;
     int resfresh = (int)delai;
     int jeu = 1;
     int changement_dir = 0;
     *redemarrer = 0;
-
+    bool pause = 0;
     // generer_arriere_plan_jpeg("../textures/snake.png");
     while (window->isOpen() && jeu)
     {
@@ -140,20 +146,43 @@ void jeu(sf::RenderWindow *window, class snake *personnage, class food *pomme, i
         display_sprites(window, *personnage, *pomme);
         if (clock.getElapsedTime().asMilliseconds() >= delai)
         {
-            clock.restart();
-            if (resfresh >= 10)
+            if (!pause)
             {
-                changement_dir = 0;
-                resfresh = 0;
-                personnage->avancer();
-                collision(personnage, pomme, &jeu);
-                personnage->put_texture(*pomme); // met à jour les textures et positions
+                clock.restart();
+                if (resfresh >= 10)
+                {
+                    changement_dir = 0;
+                    resfresh = 0;
+                    personnage->avancer();
+                    collision(personnage, pomme, &jeu);
+                    personnage->put_texture(*pomme); // met à jour les textures et positions
+                }
             }
-            gestion_fleches(event, personnage, &changement_dir);
+            gestion_fleches(event, personnage, &changement_dir, &pause);
             resfresh++;
         }
+if (pause)
+{
+    sf::Font font;
+    if (!font.loadFromMemory(arial_ttf, arial_ttf_len))
+    {
+        std::cerr << "Error: impossible de load the font" << std::endl;
+    }
 
-        window->display();
+    sf::Text text_pause("PAUSE", font, 100);
+    text_pause.setFillColor(sf::Color::Black);
+
+    sf::FloatRect textBounds = text_pause.getLocalBounds();
+
+    text_pause.setOrigin(textBounds.left + textBounds.width / 2.0f,
+                         textBounds.top + textBounds.height / 2.0f);
+
+    text_pause.setPosition(TAILLE_ECRAN / 2.0f, TAILLE_ECRAN / 2.0f);
+
+    window->draw(text_pause);
+}
+window->display();
+
     }
     *redemarrer = afficherEcranFin(*window, personnage->get_taille() - 1);
 }

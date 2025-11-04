@@ -87,6 +87,8 @@ make
 | **↓** | Move down |
 | **←** | Move left |
 | **→** | Move right |
+| **SPACE** | Pause/Unpause the game|
+
 
 
 
